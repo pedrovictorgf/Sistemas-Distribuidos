@@ -1,0 +1,4 @@
+1,2,20.0,True,primeira aresta
+3,4,10.0,True,outra aresta
+2,3,30.0,True,ultima aresta
+1,4,39.0,True,aresta alterada
