@@ -44,16 +44,13 @@ def searchEdge(firstV, secondV, setOfEdges):
     return None
 
 def insertNewVertex(vertex):
-    mutex.acquire()
     with open("vertex_base","a") as f:
         f.write(vertexToString(vertex))
-    mutex.release()
 
 def insertNewEdge(edge):
-    mutex.acquire()
     with open("edge_base", "a") as f:
+        print("passou aqui")
         f.write(edgeToString(edge))
-    mutex.release()
 
 def deleteVertexFromGraph(name, graph):
     setOfVertex = graph.setOfVertex
@@ -71,9 +68,16 @@ def deleteVertexFromGraph(name, graph):
 
 def deleteEdgeFromGraph(firstVertex, secondVertex, setOfEdges):
     auxForEdges = []
+    print("aqeui", firstVertex, secondVertex)
+    printEdges(setOfEdges)
     for e in setOfEdges:
-        if((e.firstVertex.name != firstVertex and e.secondVertex.name != secondVertex) and (e.secondVertex.name != firstVertex and e.firstVertex.name != secondVertex)):
-            auxForEdges.append(e)
+        if((e.firstVertex.name != firstVertex or e.secondVertex.name != secondVertex)):
+            if(e.isBidirectional):
+                if(e.secondVertex.name != firstVertex or e.firstVertex.name != secondVertex):
+                    auxForEdges.append(e)
+            else:
+                auxForEdges.append(e)
+    print("oha", auxForEdges)
     writeEdges(auxForEdges)
 
 
@@ -183,11 +187,13 @@ class Handler:
         - vertex
         """
         graph = readFile()
+        mutex.acquire()
         if(searchVertex(vertex.name, graph.setOfVertex) == None):
             print("Inserindo vertice")
             insertNewVertex(vertex)
         else:
             print("Vertice ja existe")
+        mutex.release()
 
     def readVertex(self, name):
         """
@@ -225,12 +231,14 @@ class Handler:
         - edge
         """
         graph = readFile()
+        mutex.acquire()
         firstV = searchVertex(firstVertex, graph.setOfVertex)
         secondV = searchVertex(secondVertex, graph.setOfVertex)
         e = searchEdge(firstVertex, secondVertex, graph.setOfEdges)
-        print(firstVertex, secondVertex)
+        print(firstV, secondV, e)
         if(firstV != None and secondV != None and e == None ):
             insertNewEdge(GraphEdge(firstV, secondV, weight, isBidirectional, description))
+        mutex.release()
 
     def readEdge(self, firstVertex, secondVertex):
         """
