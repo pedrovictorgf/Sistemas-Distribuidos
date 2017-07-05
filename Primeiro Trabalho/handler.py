@@ -49,7 +49,6 @@ def insertNewVertex(vertex):
 
 def insertNewEdge(edge):
     with open("edge_base", "a") as f:
-        print("passou aqui")
         f.write(edgeToString(edge))
 
 def deleteVertexFromGraph(name, graph):
@@ -68,7 +67,6 @@ def deleteVertexFromGraph(name, graph):
 
 def deleteEdgeFromGraph(firstVertex, secondVertex, setOfEdges):
     auxForEdges = []
-    print("aqeui", firstVertex, secondVertex)
     printEdges(setOfEdges)
     for e in setOfEdges:
         if((e.firstVertex.name != firstVertex or e.secondVertex.name != secondVertex)):
@@ -77,7 +75,6 @@ def deleteEdgeFromGraph(firstVertex, secondVertex, setOfEdges):
                     auxForEdges.append(e)
             else:
                 auxForEdges.append(e)
-    print("oha", auxForEdges)
     writeEdges(auxForEdges)
 
 
@@ -235,7 +232,6 @@ class Handler:
         firstV = searchVertex(firstVertex, graph.setOfVertex)
         secondV = searchVertex(secondVertex, graph.setOfVertex)
         e = searchEdge(firstVertex, secondVertex, graph.setOfEdges)
-        print(firstV, secondV, e)
         if(firstV != None and secondV != None and e == None ):
             insertNewEdge(GraphEdge(firstV, secondV, weight, isBidirectional, description))
         mutex.release()

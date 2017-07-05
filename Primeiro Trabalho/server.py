@@ -25,7 +25,7 @@ class Server(object):
         tfactory = TTransport.TBufferedTransportFactory()
         pfactory = TBinaryProtocol.TBinaryProtocolFactory()
 
-        server = TServer.TThreadedServer(processor, transport, tfactory, pfactory)
+        server = TServer.TThreadPoolServer(processor, transport, tfactory, pfactory)
         server.serve()
 
         # You could do one of these for a multithreaded server
